@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Cart</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="cart">
+    <div class="item">
+        <span>Item 1</span>
+        <button class="quantity-decrease">-</button>
+        <span class="quantity">1</span>
+        <button class="quantity-increase">+</button>
+        <button class="delete">Delete</button>
+        <button class="like">♡</button>
+        <span class="price">$10</span>
+    </div>
+    <div class="item">
+        <span>Item 2</span>
+        <button class="quantity-decrease">-</button>
+        <span class="quantity">1</span>
+        <button class="quantity-increase">+</button>
+        <button class="delete">Delete</button>
+        <button class="like">♡</button>
+        <span class="price">$15</span>
+    </div>
+    <div id="total">Total: $<span id="total-price">25</span></div>
+</div>
+
+<script>
+    // Add your JavaScript code here
+    document.querySelectorAll('.quantity-increase').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityElement = button.previousElementSibling;
+            let quantity = parseInt(quantityElement.textContent);
+            quantity++;
+            quantityElement.textContent = quantity;
+            updateTotal();
+        });
+    });
+
+    document.querySelectorAll('.quantity-decrease').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityElement = button.nextElementSibling;
+            let quantity = parseInt(quantityElement.textContent);
+            if (quantity > 1) {
+                quantity--;
+                quantityElement.textContent = quantity;
+                updateTotal();
+            }
+        });
+    });
+
+    document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', () => {
+            const item = button.parentElement;
+            item.remove();
+            updateTotal();
+        });
+    });
+
+    document.querySelectorAll('.like').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('liked');
+        });
+    });
+
+    function updateTotal() {
+        let totalPrice = 0;
+        document.querySelectorAll('.item').forEach(item => {
+            const quantity = parseInt(item.querySelector('.quantity').textContent);
+            const price = parseFloat(item.querySelector('.price').textContent.slice(1));
+            totalPrice += quantity * price;
+        });
+        document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+    }
+    
+</script>
+</body>
+</html>
